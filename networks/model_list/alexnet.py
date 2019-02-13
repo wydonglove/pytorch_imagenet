@@ -79,6 +79,7 @@ def alexnet(pretrained=False, **kwargs):
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
+    print("--------------")
     model = AlexNet(**kwargs)
     if pretrained:
         model_path = 'model_list/alexnet.pth.tar'

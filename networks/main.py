@@ -4,16 +4,16 @@ import shutil
 import time
 
 import torch
-import torch.nn as nn
-import torch.nn.parallel
 import torch.backends.cudnn as cudnn
 import torch.distributed as dist
+import torch.nn as nn
+import torch.nn.parallel
 import torch.optim
 import torch.utils.data
 import torch.utils.data.distributed
+
 # import torchvision.transforms as transforms
 # import torchvision.datasets as datasets
-import model_list
 
 # set the seed
 torch.manual_seed(1)
@@ -23,8 +23,9 @@ import sys
 import gc
 cwd = os.getcwd()
 sys.path.append(cwd+'/../')
-import datasets as datasets
-import datasets.transforms as transforms
+import datasets
+from model_list import alexnet
+#import datasets.transforms as transforms
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 parser.add_argument('--arch', '-a', metavar='ARCH', default='alexnet',
@@ -75,7 +76,7 @@ def main():
 
     # create model
     if args.arch=='alexnet':
-        model = model_list.alexnet(pretrained=args.pretrained)
+        model = alexnet.alexnet(pretrained=args.pretrained)
         input_size = 227
     else:
         raise Exception('Model not supported yet')
@@ -152,7 +153,7 @@ def main():
         batch_size=args.batch_size, shuffle=False,
         num_workers=args.workers, pin_memory=True)
 
-    print model
+    print(model)
 
     if args.evaluate:
         validate(val_loader, model, criterion)
@@ -302,7 +303,7 @@ class AverageMeter(object):
 def adjust_learning_rate(optimizer, epoch):
     """Sets the learning rate to the initial LR decayed by 10 every 40 epochs"""
     lr = args.lr * (0.1 ** (epoch // 40))
-    print 'Learning rate:', lr
+    print ('Learning rate:', lr)
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
 

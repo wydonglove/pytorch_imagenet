@@ -10,10 +10,10 @@ parser.add_argument('--source', default=None, action='store',
         help='target directory')
 args = parser.parse_args()
 
-print '\n===========================\nConverting keys from:'
-print '\t'+args.source
-print ' to:'
-print '\t'+args.target+'\n'
+print('\n===========================\nConverting keys from:')
+print('\t'+args.source)
+print(' to:')
+print('\t'+args.target+'\n')
 
 # read source
 source_env = lmdb.open(args.source, readonly=True)
@@ -41,6 +41,6 @@ for key, value in source_cursor:
 # write last batch
 if (item_id+1) % batch_size != 0:
     target_txn.commit()
-    print 'last batch'
+    print('last batch')
     print (item_id + 1)
 source_env.close()
